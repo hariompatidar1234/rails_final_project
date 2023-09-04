@@ -18,16 +18,6 @@ class RestaurantsController < ApplicationController
     render json: restaurant
   end
 
-  # def show
-  #   @restaurant = Restaurant.find(params[:id])
-  #   render json: {
-  #     id: @restaurant.id,
-  #     name: @restaurant.name,
-  #     status: @restaurant.status,
-  #     picture_url: @restaurant.picture.url_for()
-  #   }, status: :ok
-  # end
-
   def create
     restaurant = @current_user.restaurants.new(restaurant_params)
     if restaurant.save
@@ -42,13 +32,7 @@ class RestaurantsController < ApplicationController
 
     @restaurant.destroy
     render json: { message: 'Restaurant Deleted !!!' }, status: :ok
-  end
-
-  # def search_dishes_by_name
-  #   name = params[:name]
-  #   dishes = @restaurant.dishes.where('name LIKE ?', "%#{name}%")
-  #   render json: dishes
-  # end
+  end 
 
   def search_restaurants_by_name
     name = params[:name]

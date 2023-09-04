@@ -13,9 +13,9 @@ class CategoriesController < ApplicationController
 
   # For both owners and customers: Show details of a specific category
   def show
-    return unless @category
-
+    if  @category
     render json: @category, status: :ok
+    end 
   end
 
   # For owners: Create a new category

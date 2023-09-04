@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   skip_before_action :check_owner
   skip_before_action :check_customer
   skip_before_action :verify_authenticity_token
-  # has_secure_password
+ 
 
   def index
     users = User.all

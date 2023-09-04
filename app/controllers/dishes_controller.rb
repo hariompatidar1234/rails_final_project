@@ -1,7 +1,6 @@
 class DishesController < ApplicationController
   skip_before_action :check_customer
   skip_before_action :verify_authenticity_token
-  skip_before_action :check_owner
 
   def create
     dish = Dish.new(dish_params)
@@ -33,4 +32,5 @@ class DishesController < ApplicationController
   def dish_params
     params.permit(:name, :description, :price, :category_id, :restaurant_id)
   end
+
 end

@@ -3,13 +3,25 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
-  root 'restaurants#index'
+  # root 'restaurants#index'
 
   resources :customers
 
   # Routes for RestaurantsController
   resources :restaurants
 
+  resources :users do
+    resources :restaurants
+    resources :categories
+    resources :dishes
+    
+  end
+
+
+  # resources users do 
+  #   resources :orders
+  # end 
+  
   # Routes for DishesController
   resources :dishes
 
@@ -25,5 +37,5 @@ Rails.application.routes.draw do
   get '/search_restaurants_by_name', to: 'restaurants#search_restaurants_by_name'
   get '/dishes_list_by_restaurant_id', to: 'dishes#dishes_list_by_restaurant_id'
 
-  # get '/open_restaurants', to: 'customers#open_restaurants'
+  get '/open_restaurants', to: 'customers#open_restaurants'
 end

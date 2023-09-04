@@ -9,12 +9,7 @@ class OrdersController < ApplicationController
     dishes = Dish.where(id: params[:order][:dish_ids])
     total_amount = calculate_total_amount(dishes)
 
-    order = current_user.orders.new(
-      order_params.merge(
-        total_amount: total_amount,
-        restaurant: restaurant
-      )
-    )
+    order = current_user.orders.new(order_params.merge(total_amount: total_amount,restaurant: restaurant) )
 
     if order.save
       order.order_items.create(dishes: dishes)

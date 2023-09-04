@@ -1,7 +1,7 @@
 class Restaurant < ApplicationRecord
   belongs_to :user
   has_many :dishes, dependent: :destroy
-  has_many :orders, dependent: :destroy
+  has_many :orders
   # has_one_attached :picture
   validates :name, :status, presence: true
   validates :status, inclusion: { in: %w[open closed] }
