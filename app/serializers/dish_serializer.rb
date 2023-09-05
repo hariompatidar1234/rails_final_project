@@ -1,8 +1,11 @@
 class DishSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :price,:restaurant_id,:category_id, :restaurant
+  attributes :id, :name, :price, :restaurant, :category
 
   def restaurant
-    object.dish.restaurant.name
-  end 
+    object.restaurant.name
+  end
 
+  def category
+    object.category.name
+  end
 end

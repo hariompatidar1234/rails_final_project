@@ -1,10 +1,10 @@
 class Order < ApplicationRecord
   belongs_to :user
   belongs_to :dish
-  belongs_to :restaurant
-
-  validates :order_status, presence: true, inclusion: { in: %w[cart ordered] }
-  validates :quantity, presence: true, numericality: { greater_than: 0 }
+  # belongs_to :restaurant
+  validates :order_status, :quantity, presence: true
+  validates :order_status, inclusion: { in: %w[cart ordered] }
+  validates :quantity, numericality: { greater_than: 0 }
   before_save :calculate_total_amount
 
   private

@@ -5,14 +5,14 @@ class OrdersController < ApplicationController
 
   # Create a new order
   def create
-    restaurant = Restaurant.find_by(id: params[:order][:restaurant_id])
-    dishes = Dish.where(id: params[:order][:dish_ids])
+    # restaurant = Restaurant.find_by(id: params[:order][:restaurant_id])
+    dishes = Dish.find_by(id: params[:order][:dish_ids])
     total_amount = calculate_total_amount(dishes)
 
-    order = current_user.orders.new(order_params.merge(total_amount: total_amount,restaurant: restaurant) )
+    order = current_user.orders.new(order_params.merge(total_amount: total_amount))
 
     if order.save
-      order.order_items.create(dishes: dishes)
+      order.create(dishes: dishes)
       render json: { message: 'Order created successfully', data: order }, status: :created
     else
       render json: { errors: order.errors.full_messages }, status: :unprocessable_entity
@@ -56,7 +56,6 @@ class OrdersController < ApplicationController
       :order_status,
       :quantity,
       # :user_id,
-      :restaurant_id,
       dish_ids: []
     )
   end

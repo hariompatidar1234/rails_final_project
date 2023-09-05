@@ -47,7 +47,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_03_143837) do
 
   create_table "dishes", force: :cascade do |t|
     t.string "name"
-    t.text "description"
     t.decimal "price"
     t.integer "restaurant_id", null: false
     t.integer "category_id", null: false
@@ -60,20 +59,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_03_143837) do
   create_table "orders", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "dish_id", null: false
-    t.integer "restaurant_id", null: false
     t.string "order_status"
     t.integer "quantity"
     t.decimal "total_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["dish_id"], name: "index_orders_on_dish_id"
-    t.index ["restaurant_id"], name: "index_orders_on_restaurant_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "restaurants", force: :cascade do |t|
     t.string "name"
     t.string "status"
+    t.string "address"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -94,7 +92,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_03_143837) do
   add_foreign_key "dishes", "categories"
   add_foreign_key "dishes", "restaurants"
   add_foreign_key "orders", "dishes"
-  add_foreign_key "orders", "restaurants"
   add_foreign_key "orders", "users"
   add_foreign_key "restaurants", "users"
 end

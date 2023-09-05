@@ -1,33 +1,20 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
-  # root 'restaurants#index'
-
   resources :customers
-
-  # Routes for RestaurantsController
-  resources :restaurants
-
-  resources :users do
-    resources :restaurants
-    resources :categories
-    resources :dishes
-    
-  end
-
-
-  # resources users do 
-  #   resources :orders
-  # end 
-  
-  # Routes for DishesController
-  resources :dishes
-
-  # Routes for OrdersController
+  put '/customers_update', to: 'customers#update'
   resources :orders
   resources :categories
+  resources :dishes
+  resources :owners
+  resources :restaurants
+  resources :users do
+    resources :restaurants
+  end
+
+  resources :customers do
+    resources :dishes do
+      resources :orders
+    end
+  end
 
   resources :users
   post '/users_login', to: 'users#login'

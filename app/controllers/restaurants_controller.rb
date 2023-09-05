@@ -1,6 +1,6 @@
 class RestaurantsController < ApplicationController
   skip_before_action :check_customer
-  skip_before_action :check_owner, only: :index
+  skip_before_action :check_owner, only: %i[index create]
   before_action :set_params, only: %i[show destroy]
   skip_before_action :verify_authenticity_token
 
@@ -32,7 +32,7 @@ class RestaurantsController < ApplicationController
 
     @restaurant.destroy
     render json: { message: 'Restaurant Deleted !!!' }, status: :ok
-  end 
+  end
 
   def search_restaurants_by_name
     name = params[:name]
@@ -45,7 +45,7 @@ class RestaurantsController < ApplicationController
   private
 
   def restaurant_params
-    params.permit(:name, :status, :user_id, :picture)
+    params.permit(:name, :status, :address, :user_id, :picture)
   end
 
   def set_params
