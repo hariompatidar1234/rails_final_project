@@ -35,11 +35,6 @@ class ApplicationController < ActionController::Base
 	  end
 	end
   
-	def search_hotel_by_name
-	  hotels = Hotel.where("name LIKE ?", "%#{params[:name]}%")
-	  render json: hotels
-	end
-  
 	def render_404
 	  render json: { error: "Invalid URL" }, status: :not_found
 	end

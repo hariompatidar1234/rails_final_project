@@ -3,11 +3,14 @@ class UsersController < ApplicationController
   skip_before_action :check_owner
   skip_before_action :check_customer
   skip_before_action :verify_authenticity_token
- 
 
   def index
     users = User.all
-    render json: users
+    if users.size != 0
+      render json: users
+    else
+      render json: 'Costumer and Owner is not present'
+    end
   end
 
   def login
