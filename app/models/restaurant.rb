@@ -6,8 +6,6 @@ class Restaurant < ApplicationRecord
   validates :status, inclusion: { in: %w[open closed] }
   validates :name, uniqueness: true
   validate :owner_only_add_restaurants
-  # validatea :status,scope: {where-> status=="open"}
-  # Custom validation method to ensure only owners can create restaurants
   def owner_only_add_restaurants
     return if user.type == 'Owner'
 

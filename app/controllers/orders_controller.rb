@@ -22,6 +22,22 @@ class OrdersController < ApplicationController
     render json: orders, status: :ok
   end
 
+
+  def update
+    @order = current_user.orders.find_by(id: params[:id])
+    if  @order.order_status == "cart"
+      if @order.update(order_status: "ordered")
+        render json: { message: 'Order status updated to "ordered"' }, status: :ok
+      else
+        render json: { errors: @order.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { message: 'Order not found or cannot be updated' }, status: :not_found
+    end
+  end
+  
+
+
   # Show a specific order
   def show
     render json: @order, status: :ok if @order.present?
