@@ -1,7 +1,6 @@
 class Order < ApplicationRecord
   belongs_to :user
   belongs_to :dish
-  # belongs_to :restaurant
   validates :order_status, :quantity, presence: true
   validates :order_status, inclusion: { in: %w[cart ordered] }
   validates :quantity, numericality: { greater_than: 0 }

@@ -1,4 +1,4 @@
-vsource 'https://rubygems.org'
+source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # ruby "3.0.6"
@@ -40,7 +40,7 @@ gem 'rubocop', require: false
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
-
+gem 'bootsnap'
 # Reduces boot times through caching; required in config/boot.rb
 # gem 'bootsnap', require: false
 # gem 'rubocop', '~> 1.56', require: false

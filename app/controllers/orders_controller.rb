@@ -2,20 +2,11 @@ class OrdersController < ApplicationController
   # require 'byebug'
   skip_before_action :check_owner
   before_action :set_order, only: %i[show destroy]
-  # skip_before_action :verify_authenticity_token
-
-  # Create a new order
   def create
-    # restaurant = Restaurant.find_by(id: params[:order][:restaurant_id])
-    # dishes = Dish.find_by(id: params[:order][:dish_ids])
     dish_id = params[:dish_id]
     dishes = Dish.where(id: dish_id)
-    total_amount = calculate_total_amount(dishes)
-    order = current_user.orders.new(order_params.merge(total_amount: total_amount))
+    order = current_user.orders.new(order_params)
     if order.save
-      # order.dishes << dishes
-      # order.create(dishes: dishes)
-      # byebug
       render json: { message: 'Order created successfully', data: order }, status: :created
     else
 
@@ -62,15 +53,5 @@ class OrdersController < ApplicationController
       # :user_id,
       :dish_id
     )
-  end
-
-  # Calculate the total amount based on selected dishes
-  def calculate_total_amount(dishes)
-    # dishes.sum(&:price)
-    total_amount = 0
-    dishes.each do |dish|
-      total_amount += dish.price
-    end
-    total_amount
   end
 end

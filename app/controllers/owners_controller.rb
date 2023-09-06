@@ -5,7 +5,7 @@ class OwnersController < ApplicationController
   # skip_before_action :verify_authenticity_token
   # before_action :set_params, only: %i[show destroy update]
   # has_secure_password
-
+  
   def create
     owner = Owner.new(owner_params)
     if owner.save
@@ -14,12 +14,17 @@ class OwnersController < ApplicationController
       render json: { error: 'Registration failed' }
     end
   end
-
+  
+  def show
+    @owner=Owner.find_by_id(params[:id])
+    render json: @owner
+  end
+  
   def update
     @current_user.update(owner_params)
     render json: { message: 'owner updated' }
   end
-
+  
   def destroy
     if @current_user.destroy
       render json: { message: 'Owner  deleted' }, status: :no_content
@@ -27,17 +32,17 @@ class OwnersController < ApplicationController
       render json: { message: 'Owner deletion failed' }
     end
   end
-
+  
   private
-
+  
   def owner_params
     params.permit(:name, :email, :password)
   end
-
+  
   # def set_order
   #   @customer = current_user.owner.find_by(id: params[:id])
   #   return if @owner
-
+  
   #   render json: { message: 'Order not found' }, status: :not_found
   # end
 end
