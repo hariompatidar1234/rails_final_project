@@ -1,8 +1,9 @@
 class OwnersController < ApplicationController
-  skip_before_action :authenticate_request, only: [:create]
+  skip_before_action :authenticate_request, only: %i[create update]
   skip_before_action :check_customer
   skip_before_action :check_owner, only: [:create]
-  skip_before_action :verify_authenticity_token
+  # skip_before_action :verify_authenticity_token
+  # before_action :set_params, only: %i[show destroy update]
   # has_secure_password
 
   def create
@@ -14,8 +15,13 @@ class OwnersController < ApplicationController
     end
   end
 
+  def update
+    @current_user.update(owner_params)
+    render json: { message: 'owner updated' }
+  end
+
   def destroy
-    if current_user.destroy
+    if @current_user.destroy
       render json: { message: 'Owner  deleted' }, status: :no_content
     else
       render json: { message: 'Owner deletion failed' }
@@ -27,4 +33,11 @@ class OwnersController < ApplicationController
   def owner_params
     params.permit(:name, :email, :password)
   end
+
+  # def set_order
+  #   @customer = current_user.owner.find_by(id: params[:id])
+  #   return if @owner
+
+  #   render json: { message: 'Order not found' }, status: :not_found
+  # end
 end

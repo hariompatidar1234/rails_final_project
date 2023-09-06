@@ -2,7 +2,7 @@ class RestaurantsController < ApplicationController
   skip_before_action :check_customer
   skip_before_action :check_owner, only: %i[index create]
   before_action :set_params, only: %i[show destroy]
-  skip_before_action :verify_authenticity_token
+  # skip_before_action :verify_authenticity_token
 
   def index
     restaurants = if params[:open] == 'true'

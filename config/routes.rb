@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
-  resources :customers
-  put '/customers_update', to: 'customers#update'
+  resource :customers
+  # put '/customers_update', to: 'customers#update'
   resources :orders
   resources :categories
   resources :dishes
   resources :owners
+  put '/owners_update',to: 'owners#update'
   resources :restaurants
   resources :users do
     resources :restaurants

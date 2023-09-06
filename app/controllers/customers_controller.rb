@@ -1,8 +1,8 @@
 class CustomersController < ApplicationController
-  skip_before_action :authenticate_request, only: [:create]
+  skip_before_action :authenticate_request, only: %i[create]
   skip_before_action :check_customer, only: [:create]
   skip_before_action :check_owner
-  skip_before_action :verify_authenticity_token
+
 
   def create
     customer = Customer.new(customer_params)
@@ -13,13 +13,18 @@ class CustomersController < ApplicationController
     end
   end
 
+  def show
+    customer = @current_user
+    render json: customer
+  end
+
   def update
     current_user.update(customer_params)
     render json: { message: 'Customer updated' }
   end
 
   def destroy
-    if current_user.destroy
+    if @current_user.destroy
       render json: { message: 'Customer deleted' }, status: :no_content
     else
       render json: { message: 'Customer deletion failed' }

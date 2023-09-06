@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   skip_before_action :authenticate_request, only: %i[index create login]
   skip_before_action :check_owner
   skip_before_action :check_customer
-  skip_before_action :verify_authenticity_token
+  # skip_before_action :verify_authenticity_token
 
   def index
     users = User.all

@@ -1,6 +1,6 @@
 class DishesController < ApplicationController
   skip_before_action :check_customer
-  skip_before_action :verify_authenticity_token
+  # skip_before_action :verify_authenticity_token
 
   def create
     dish = Dish.new(dish_params)

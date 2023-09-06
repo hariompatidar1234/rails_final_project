@@ -3,7 +3,7 @@ class CategoriesController < ApplicationController
   skip_before_action :check_customer
   skip_before_action :check_owner
   before_action :set_category, only: %i[show destroy]
-  skip_before_action :verify_authenticity_token
+  # skip_before_action :verify_authenticity_token
 
   # For both owners and customers: List all categories
   def index
@@ -15,7 +15,7 @@ class CategoriesController < ApplicationController
   def show
     if  @category
     render json: @category, status: :ok
-    end 
+    end
   end
 
   # For owners: Create a new category
