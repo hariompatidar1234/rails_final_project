@@ -1,12 +1,39 @@
 Rails.application.routes.draw do
   resource :customers
   # put '/customers_update', to: 'customers#update'
-  resources :orders
-  resources :categories
-  resources :dishes
-  resources :owners
-  put '/owners_update',to: 'owners#update'
-  resources :restaurants
+  resources :categories, only: [:index, :show, :create, :update, :destroy] do
+    # Add custom routes specific to categories if needed
+  end
+
+  # Restaurants
+  resources :restaurants, param: :name, only: [:index, :show, :create, :update, :destroy] do
+    # Add custom routes specific to restaurants if needed
+  end
+
+  # Dishes
+  resources :dishes, only: [:index, :show, :create, :update, :destroy] do
+    # Add custom routes specific to dishes if needed
+  end
+
+  # Owners (assuming you have a separate controller for owners)
+  resources :owners, only: [:index, :show, :create, :update, :destroy] do
+    # Add custom routes specific to owners if needed
+  end
+
+  # Customers (assuming you have a separate controller for customers)
+  resources :customers, only: [:index, :show, :create, :update, :destroy] do
+    # Add custom routes specific to customers if needed
+  end
+
+  # Orders
+  resources :orders, only: [:index, :show, :create, :update, :destroy] do
+    # Add custom routes specific to orders if needed
+  end
+
+  # Additional custom routes can be added as needed
+
+  # For example, to define a custom route for open restaurants
+  get 'restaurants/open', to: 'restaurants#open_restaurants'
 
 
   resources :users

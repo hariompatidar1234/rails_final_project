@@ -1,26 +1,25 @@
 class CustomersController < ApplicationController
-  skip_before_action :authenticate_request, only: %i[create]
-  skip_before_action :check_customer, only: :create
-  # skip_before_action :check_owner
-
+  skip_before_action :authenticate_request, only: :create
 
   def create
     customer = Customer.new(customer_params)
     if customer.save
-      render json: { message: 'Customer Created!!!', data: customer }
+      render json: { message: 'Customer Created!!!', data: customer }, status: :created
     else
-      render json: customer.errors.full_messages, status: :unprocessable_entity
+      render json: { errors: customer.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def show
-    customer = @current_user
-    render json: customer
+    render json: @current_user
   end
 
   def update
-    current_user.update(customer_params)
-    render json: { message: 'Customer updated' }
+    if @current_user.update(customer_params)
+      render json: { message: 'Customer updated' }
+    else
+      render json: { errors: @current_user.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy

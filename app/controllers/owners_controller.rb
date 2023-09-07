@@ -1,30 +1,31 @@
 class OwnersController < ApplicationController
-  skip_before_action :authenticate_request, only: %i[create update]
-  skip_before_action :check_customer
-  skip_before_action :check_owner, only: [:create]
+  before_action :set_owner, only: [:show, :update, :destroy]
+  load_and_authorize_resource # Load the owner and authorize actions using CanCanCan
 
   def create
-    owner = Owner.new(owner_params)
-    if owner.save
-      render json: { message: 'Owner Created', data: owner }
+    @owner = Owner.new(owner_params) # Load a new owner
+    if @owner.save
+      render json: { message: 'Owner Created', data: @owner }
     else
-      render json: { error: 'Registration failed' }
+      render json: { error: 'Registration failed' }, status: :unprocessable_entity
     end
   end
 
   def show
-    @owner=Owner.find_by_id(params[:id])
     render json: @owner
   end
 
   def update
-    @current_user.update(owner_params)
-    render json: { message: 'owner updated' }
+    if @owner.update(owner_params)
+      render json: { message: 'Owner updated' }
+    else
+      render json: { errors: @owner.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
-    if @current_user.destroy
-      render json: { message: 'Owner  deleted' }, status: :no_content
+    if @owner.destroy
+      render json: { message: 'Owner deleted' }, status: :no_content
     else
       render json: { message: 'Owner deletion failed' }
     end
@@ -36,10 +37,8 @@ class OwnersController < ApplicationController
     params.permit(:name, :email, :password)
   end
 
-  # def set_order
-  #   @customer = current_user.owner.find_by(id: params[:id])
-  #   return if @owner
-
-  #   render json: { message: 'Order not found' }, status: :not_found
-  # end
+  def set_owner
+    @owner = Owner.find_by(id: params[:id])
+    render json: { message: 'Owner not found' }, status: :not_found unless @owner
+  end
 end

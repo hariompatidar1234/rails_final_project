@@ -1,49 +1,40 @@
 class DishesController < ApplicationController
-  skip_before_action :check_customer
-  before_action :check_owner, only: %i[create update destroy]
+  before_action :set_dish, only: [:update, :destroy]
+  load_and_authorize_resource # Load the dish and authorize actions using CanCanCan
 
   def create
-    dish = Dish.new(dish_params)
-    if dish.save
-      render json: { message: 'Dish added successfully!!', data: dish }, status: :created
+    @dish = Dish.new(dish_params) # Load a new dish
+    if @dish.save
+      render json: { message: 'Dish added successfully!', data: @dish }, status: :created
     else
-      render json: { errors: dish.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @dish.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def index
-    if params[:page]
-      dishes=Dish.page(params[:page]).per(15)
-      # Dish.paginate :per_page => 2, :page => params[:page]
-    else
-      dishes = Dish.all
-    end
+    page_number = params[:page] || 1
+    per_page = params[:per_page] || 15  # You can adjust the number of items per page
+  
+    # Paginate the dishes
+    dishes = Dish.page(page_number).per(per_page)
+  
     render json: dishes, status: :ok
   end
 
   def update
-    @dish=Dish.find_by_id(params[:id])
-    if @dish
-      @dish.update(dish_params)
-      render json: { message: 'updated successfully' }
+    if @dish.update(dish_params)
+      render json: { message: 'Dish updated successfully!' }
     else
-      render json: {message: 'Updation failed'}
+      render json: { message: 'Dish update failed' }
     end
   end
 
   def destroy
-    @dish=Dish.find_by_id(params[:id])
-    if @dish
-      @dish.destroy
-      render json: {message: "successfully  Deleted dish"}
+    if @dish.destroy
+      render json: { message: 'Dish successfully deleted' }
     else
-      render json: {message: "Deletion failed"}
+      render json: { message: 'Dish deletion failed' }
     end
-  end
-
-  def dishes_list_by_restaurant_id
-    dishes = Dish.where(restaurant_id: params[:restaurant_id])
-    render json: dishes, status: :ok
   end
 
   def search_dishes_by_name
@@ -55,7 +46,11 @@ class DishesController < ApplicationController
   private
 
   def dish_params
-    params.permit(:name, :description, :price, :category_id, :restaurant_id,:picture)
+    params.permit(:name, :description, :price, :category_id, :restaurant_id, :picture)
   end
 
+  def set_dish
+    @dish = Dish.find_by_id(params[:id])
+    render json: { message: 'Dish not found' }, status: :not_found unless @dish
+  end
 end
