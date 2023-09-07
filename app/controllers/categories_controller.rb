@@ -1,31 +1,35 @@
 class CategoriesController < ApplicationController
-  before_action :check_owner,only: %i[create,destroy]
-  before_action :set_category, only: %i[show destroy]
+  before_action :set_category, only: [:show, :destroy]
+  load_and_authorize_resource # Load the category and authorize actions using CanCanCan
 
-  # For both owners and customers: List all categories
+  # List all categories
   def index
     categories = Category.all
     render json: categories, status: :ok
   end
 
-  # For both owners and customers: Show details of a specific category
+  # Show details of a specific category by name
   def show
-      render json: @category, status: :ok
+    render json: @category, status: :ok
   end
 
-  # For owners: Create a new category
+  # Create a new category
   def create
-    category = Category.new(category_params)
-    if category.save
-      render json: { message: 'Category Created', data: category }
+    @category = Category.new(category_params) # Load a new category
+    if @category.save
+      render json: { message: 'Category Created', data: @category }, status: :created
     else
-      render json: { errors: category.errors.full_messages }
+      render json: { errors: @category.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
+  # Delete a category by name
   def destroy
-    @category.destroy
-    render json: { message: 'category Deleted !!!' }, status: :ok
+    if @category.destroy
+      render json: { message: 'Category Deleted by Name !!!' }, status: :ok
+    else
+      render json: { message: 'Category not found by Name' }, status: :not_found
+    end
   end
 
   private
@@ -35,8 +39,8 @@ class CategoriesController < ApplicationController
   end
 
   def set_category
-    @category = Category.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: 'Category not found' }, status: :not_found
+    name = params[:name]
+    @category = Category.find_by(name: name)
+    render json: { error: 'Category not found by Name' }, status: :not_found unless @category
   end
 end

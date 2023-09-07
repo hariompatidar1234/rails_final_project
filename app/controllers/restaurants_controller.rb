@@ -1,55 +1,58 @@
 class RestaurantsController < ApplicationController
-  skip_before_action :check_customer
-  skip_before_action :check_owner
+  before_action :set_restaurant, only: [:show, :update, :destroy]
+  load_and_authorize_resource # Load the restaurant and authorize actions using CanCanCan
 
   def index
+    page_number = params[:page] || 1
+    per_page = params[:per_page] || 10  # You can adjust the number of items per page
+  
+    # Filter restaurants based on the 'open' status if 'open' param is provided
     restaurants = if params[:open] == 'true'
-      Restaurant.where(status: 'open')
+      Restaurant.where(status: 'open').page(page_number).per(per_page)
     else
-      Restaurant.all
+      Restaurant.page(page_number).per(per_page)
     end
+  
+    # Render the paginated restaurants as JSON
     render json: restaurants
   end
 
   def show
-    @restaurant=Restaurant.find_by_id(params[:id])
     render json: @restaurant
   end
 
   def create
-    restaurant = @current_user.restaurants.new(restaurant_params)
+    restaurant = current_user.restaurants.new(restaurant_params)
     if restaurant.save
       render json: restaurant, status: :created
     else
-      render json: { error: restaurant.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: restaurant.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
-
   def update
-    @restaurant=Restaurant.find_by_id(params[:id])
-    @restaurant.update(restaurant_params)
-    render json: { message: 'updated successfully' }
+    if @restaurant.update(restaurant_params)
+      render json: { message: 'Updated successfully' }
+    else
+      render json: { errors: @restaurant.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
-    @restaurant=Restaurant.find_by_id(params[:id])
-    @restaurant.destroy
-    render json: {message: 'Deleted successfully'}
-  end
-
-
-  def search_restaurants_by_name
-    name = params[:name]
-    return render json: "Restaurant name can't be blank" if name.blank?
-
-    restaurant = Restaurant.where('name LIKE ?', "%#{name}%")
-    render json: restaurant
+    if @restaurant.destroy
+      render json: { message: 'Deleted successfully' }
+    else
+      render json: { errors: @restaurant.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   private
 
   def restaurant_params
-    params.permit(:name, :status, :address, :user_id, :picture)
+    params.permit(:name, :status, :address, :picture)
+  end
+
+  def set_restaurant
+    @restaurant = Restaurant.find_by(name: params[:name])
   end
 end
