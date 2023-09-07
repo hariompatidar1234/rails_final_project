@@ -12,7 +12,7 @@ class Order < ApplicationRecord
   def calculate_total_amount
     self.total_amount = quantity * dish.price
   end
-    #Callback method to set the default order_status to "cart"
+  #Callback method to set the default order_status to "cart"
   def set_default_order_status
     self.order_status ||= "cart"
   end

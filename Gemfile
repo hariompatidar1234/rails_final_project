@@ -24,6 +24,9 @@ gem 'turbo-rails'
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem 'stimulus-rails'
+# gem 'will_paginate'
+# gem "will_paginate", "~> 3.0.4", :require => nil
+# gem 'will_paginate-bootstrap'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem 'jbuilder'
@@ -77,3 +80,4 @@ gem 'active_model_serializers'
 gem 'jwt'
 
 gem 'image_processing', '>= 1.2'
+gem 'kaminari', '~> 1.2', '>= 1.2.2'

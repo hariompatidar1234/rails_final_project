@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
-  # require 'byebug'
   skip_before_action :check_owner
   before_action :set_order, only: %i[show destroy]
+
   def create
     dish_id = params[:dish_id]
     dishes = Dish.where(id: dish_id)
@@ -27,7 +27,7 @@ class OrdersController < ApplicationController
     @order = current_user.orders.find_by(id: params[:id])
     if  @order.order_status == "cart"
       if @order.update(order_status: "ordered")
-        render json: { message: 'Order status updated to "ordered"' }, status: :ok
+        render json: { message: 'Order status updated to ordered' }, status: :ok
       else
         render json: { errors: @order.errors.full_messages }, status: :unprocessable_entity
       end
@@ -35,7 +35,7 @@ class OrdersController < ApplicationController
       render json: { message: 'Order not found or cannot be updated' }, status: :not_found
     end
   end
-  
+
 
 
   # Show a specific order
@@ -45,8 +45,6 @@ class OrdersController < ApplicationController
 
   # Delete an order
   def destroy
-    return unless @order
-
     @order.destroy
     render json: { message: 'Order deleted' }, status: :ok
   end
@@ -66,7 +64,6 @@ class OrdersController < ApplicationController
     params.permit(
       :order_status,
       :quantity,
-      # :user_id,
       :dish_id
     )
   end
