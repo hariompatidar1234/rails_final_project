@@ -40,7 +40,11 @@ class CategoriesController < ApplicationController
 
   def set_category
     name = params[:name]
+<<<<<<< HEAD
+    @category = Category.find_by_name(params[:category_name])
+=======
     @category = Category.find_by(name: name)
+>>>>>>> Master
     render json: { error: 'Category not found by Name' }, status: :not_found unless @category
   end
 end
