@@ -5,6 +5,11 @@ class OrdersController < ApplicationController
   def create
     dish_ids = params[:dish_ids]
     restaurant_id = params[:restaurant_id]
+<<<<<<< HEAD
+=======
+
+    # Check if all selected dishes belong to the same restaurant
+>>>>>>> Master
     restaurant = Restaurant.find_by(id: restaurant_id)
     if restaurant.nil?
       return render json: { message: 'Restaurant not found' }, status: :unprocessable_entity

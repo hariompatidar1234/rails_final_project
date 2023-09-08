@@ -1,12 +1,20 @@
 Rails.application.routes.draw do
   resource :customers
   # put '/customers_update', to: 'customers#update'
+<<<<<<< HEAD
   resources :categories,param: :category_name,only:  [:index, :show, :create,:destroy] do
+=======
+  resources :categories, only: [:index, :show, :create, :update, :destroy] do
+>>>>>>> Master
     # Add custom routes specific to categories if needed
   end
 
   # Restaurants
+<<<<<<< HEAD
   resources :restaurants, param: :restaurant_name, only: [:index, :show, :create, :update, :destroy] do
+=======
+  resources :restaurants, param: :name, only: [:index, :show, :create, :update, :destroy] do
+>>>>>>> Master
     # Add custom routes specific to restaurants if needed
   end
 
@@ -16,7 +24,11 @@ Rails.application.routes.draw do
   end
 
   # Owners (assuming you have a separate controller for owners)
+<<<<<<< HEAD
   resources :owners,param: :owner_name, only: [:index, :show, :create, :update, :destroy] do
+=======
+  resources :owners, only: [:index, :show, :create, :update, :destroy] do
+>>>>>>> Master
     # Add custom routes specific to owners if needed
   end
 
