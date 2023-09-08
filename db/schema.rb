@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_03_143837) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_08_073756) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -45,6 +45,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_03_143837) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "dish_orders", force: :cascade do |t|
+    t.integer "dish_id", null: false
+    t.integer "order_id", null: false
+    t.string "order_status"
+    t.integer "quantity"
+    t.decimal "total_amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dish_id"], name: "index_dish_orders_on_dish_id"
+    t.index ["order_id"], name: "index_dish_orders_on_order_id"
+  end
+
   create_table "dishes", force: :cascade do |t|
     t.string "name"
     t.decimal "price"
@@ -58,13 +70,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_03_143837) do
 
   create_table "orders", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "dish_id", null: false
     t.string "order_status"
     t.integer "quantity"
     t.decimal "total_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["dish_id"], name: "index_orders_on_dish_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -89,9 +99,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_03_143837) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "dish_orders", "dishes"
+  add_foreign_key "dish_orders", "orders"
   add_foreign_key "dishes", "categories"
   add_foreign_key "dishes", "restaurants"
-  add_foreign_key "orders", "dishes"
   add_foreign_key "orders", "users"
   add_foreign_key "restaurants", "users"
 end

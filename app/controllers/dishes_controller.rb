@@ -14,10 +14,10 @@ class DishesController < ApplicationController
   def index
     page_number = params[:page] || 1
     per_page = params[:per_page] || 15  # You can adjust the number of items per page
-  
+
     # Paginate the dishes
     dishes = Dish.page(page_number).per(per_page)
-  
+
     render json: dishes, status: :ok
   end
 

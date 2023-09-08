@@ -4,12 +4,14 @@ class Ability
   def initialize(user)
     user ||= User.new # Guest user
 
-    if user.owner?
-      # Abilities for owners
+    # if User.Owner?
+    if 'Owner' == user.type
+      # # Abilities for owners
+      can :create ,[Owner]
       can :manage, [Restaurant, Category, Dish] # Create, update, and destroy restaurants, categories, and dishes
       can :index, [Restaurant, Category, Dish] # View lists of restaurants, categories, and dishes
       can :search, [Dish] # Search for dishes
-    else user.customer?
+    else 'Customer' == user.type
       # Abilities for customers
       can :create, Order # Create an order
       can :read, Order, user_id: user.id # View their own orders

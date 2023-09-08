@@ -5,14 +5,14 @@ class RestaurantsController < ApplicationController
   def index
     page_number = params[:page] || 1
     per_page = params[:per_page] || 10  # You can adjust the number of items per page
-  
+
     # Filter restaurants based on the 'open' status if 'open' param is provided
     restaurants = if params[:open] == 'true'
       Restaurant.where(status: 'open').page(page_number).per(per_page)
     else
       Restaurant.page(page_number).per(per_page)
     end
-  
+
     # Render the paginated restaurants as JSON
     render json: restaurants
   end
@@ -53,6 +53,7 @@ class RestaurantsController < ApplicationController
   end
 
   def set_restaurant
-    @restaurant = Restaurant.find_by(name: params[:name])
+    # byebug
+  @restaurant = Restaurant.find_by_name(params[:restaurant_name])
   end
 end

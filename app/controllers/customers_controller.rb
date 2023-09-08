@@ -1,5 +1,5 @@
 class CustomersController < ApplicationController
-  skip_before_action :authenticate_request, only: :create
+  before_action :authenticate_request, except: :create
 
   def create
     customer = Customer.new(customer_params)
