@@ -6,9 +6,11 @@ class Restaurant < ApplicationRecord
   validates :status, inclusion: { in: %w[open closed] }
   validates :name, uniqueness: true
   # validate :owner_only_add_restaurants
+
+  # private 
+
   # def owner_only_add_restaurants
   #   return if user.type == 'Owner'
-
   #   errors.add(:base, 'Only Owner have permission to add restaurants.')
   # end
 end

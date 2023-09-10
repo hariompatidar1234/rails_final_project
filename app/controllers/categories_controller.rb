@@ -1,7 +1,6 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: [:show, :destroy]
-  load_and_authorize_resource # Load the category and authorize actions using CanCanCan
-
+  load_and_authorize_resource 
   # List all categories
   def index
     categories = Category.all
@@ -26,7 +25,7 @@ class CategoriesController < ApplicationController
   # Delete a category by name
   def destroy
     if @category.destroy
-      render json: { message: 'Category Deleted by Name !!!' }, status: :ok
+      render json: {data: @category, message: 'Category Deleted  !!!' }, status: :ok
     else
       render json: { message: 'Category not found by Name' }, status: :not_found
     end
@@ -40,11 +39,8 @@ class CategoriesController < ApplicationController
 
   def set_category
     name = params[:name]
-<<<<<<< HEAD
+
     @category = Category.find_by_name(params[:category_name])
-=======
-    @category = Category.find_by(name: name)
->>>>>>> Master
     render json: { error: 'Category not found by Name' }, status: :not_found unless @category
   end
 end

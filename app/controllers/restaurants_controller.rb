@@ -1,26 +1,17 @@
 class RestaurantsController < ApplicationController
   before_action :set_restaurant, only: [:show, :update, :destroy]
-  load_and_authorize_resource # Load the restaurant and authorize actions using CanCanCan
+  load_and_authorize_resource 
 
   def index
     page_number = params[:page] || 1
     per_page = params[:per_page] || 10  # You can adjust the number of items per page
-<<<<<<< HEAD
-
-=======
   
->>>>>>> Master
     # Filter restaurants based on the 'open' status if 'open' param is provided
     restaurants = if params[:open] == 'true'
       Restaurant.where(status: 'open').page(page_number).per(per_page)
     else
       Restaurant.page(page_number).per(per_page)
-    end
-<<<<<<< HEAD
-
-=======
-  
->>>>>>> Master
+    end 
     # Render the paginated restaurants as JSON
     render json: restaurants
   end
@@ -30,7 +21,7 @@ class RestaurantsController < ApplicationController
   end
 
   def create
-    restaurant = current_user.restaurants.new(restaurant_params)
+    restaurant = @current_user.restaurants.new(restaurant_params)
     if restaurant.save
       render json: restaurant, status: :created
     else
@@ -61,11 +52,7 @@ class RestaurantsController < ApplicationController
   end
 
   def set_restaurant
-<<<<<<< HEAD
-    # byebug
-  @restaurant = Restaurant.find_by_name(params[:restaurant_name])
-=======
-    @restaurant = Restaurant.find_by(name: params[:name])
->>>>>>> Master
+    @restaurant = Restaurant.find_by_name(params[:restaurant_name])
+
   end
 end
