@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.0.6"
-# ruby '3.2.2'
+# ruby '3.0.6'
+ruby '3.2.2'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.7', '>= 7.0.7.2'
@@ -42,8 +42,8 @@ gem 'rubocop', require: false
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'bootsnap'
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 # Reduces boot times through caching; required in config/boot.rb
 # gem 'bootsnap', require: false
 # gem 'rubocop', '~> 1.56', require: false
@@ -79,7 +79,6 @@ end
 gem 'active_model_serializers'
 gem 'jwt'
 
+gem 'cancancan'
 gem 'image_processing', '>= 1.2'
 gem 'kaminari', '~> 1.2', '>= 1.2.2'
-gem 'cancancan'
-

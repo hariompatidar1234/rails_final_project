@@ -1,12 +1,12 @@
 class OwnersController < ApplicationController
-  before_action :set_owner, only: [:show, :update, :destroy]
-    skip_before_action :authenticate_request, only: :create
-  # load_and_authorize_resource # Load the owner and authorize actions using CanCanCan
+  before_action :set_owner, only: %i[show update destroy]
+  before_action :authenticate_request, except: :create
+
 
   def create
     @owner = Owner.new(owner_params) # Load a new owner
     if @owner.save
-      render json: { message: 'Owner Created', data: @owner }
+      render json: { message: 'Owner Created' }
     else
       render json: { error: 'Registration failed' }, status: :unprocessable_entity
     end
@@ -39,10 +39,7 @@ class OwnersController < ApplicationController
   end
 
   def set_owner
-    @owner = Owner.find_by(name: params[:owner_name])
-
-    @owner = Owner.find_by(id: params[:id])
-
+    @owner = Owner.find_by_name(params[:owner_name])
     render json: { message: 'Owner not found' }, status: :not_found unless @owner
   end
 end

@@ -8,7 +8,7 @@ class DishOrdersController < ApplicationController
   end
 
   def show
-    render json: @dish_order
+    render json:@dish_order_params
   end
 
   def create
@@ -22,16 +22,28 @@ class DishOrdersController < ApplicationController
   end
 
   def update
-    if @dish_order.update(dish_order_params)
-      render json: @dish_order
+    if @dish_order.order_status == 'cart'
+      if @dish_order.update(dish_order_params)
+      render json: {data: @dish_order, message: 'Updated successfully' }
+      else
+        render json: @dish_order.errors, status: :unprocessable_entity
+      end
     else
-      render json: @dish_order.errors, status: :unprocessable_entity
+      render json: { message: "No such dish found for update"  }
     end
   end
 
 
   def destroy
-    @dish_order.destroy
+    if @dish_order.order_status=='cart'
+      if @dish_order.destroy
+        render json: @dish_order
+      else
+        render json: @dish_order.errors, status: :unprocessable_entity
+      end
+    else
+    render json: { message: "No such dish found for delete"  }
+    end
   end
 
   private
@@ -41,6 +53,6 @@ class DishOrdersController < ApplicationController
   end
 
   def dish_order_params
-    params.require(:dish_order).permit(:order_id, :dish_id, :order_status, :quantity, :total_amount)
+    params.require(:dish_order).permit(:order_id, :dish_id, :order_status, :quantity)
   end
 end

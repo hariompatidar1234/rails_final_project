@@ -1,6 +1,6 @@
 class DishesController < ApplicationController
   before_action :set_dish, only: [:update, :destroy]
-  load_and_authorize_resource # Load the dish and authorize actions using CanCanCan
+  load_and_authorize_resource
 
   def create
     @dish = Dish.new(dish_params) # Load a new dish
@@ -12,11 +12,13 @@ class DishesController < ApplicationController
   end
 
   def index
-    page_number = params[:page] || 1
-    per_page = params[:per_page] || 15 
-    dishes = Dish.page(page_number).per(per_page)
-    dishes = Dish.page(page_number).per(per_page)
+    page_number = params[:page]
+    if params[:page].nil?
+       render json: Dish.all
+    else
+    dishes = Dish.all.page(page_number).per(2)
     render json: dishes, status: :ok
+    end
   end
 
   def update
@@ -33,12 +35,6 @@ class DishesController < ApplicationController
     else
       render json: { message: 'Dish deletion failed' }
     end
-  end
-
-  def search_dishes_by_name
-    name = params[:name]
-    dishes = Dish.where('name LIKE ?', "%#{name}%")
-    render json: dishes
   end
 
   private

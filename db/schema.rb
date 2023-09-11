@@ -46,8 +46,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_08_073756) do
   end
 
   create_table "dish_orders", force: :cascade do |t|
-    t.integer "dish_id", null: false
-    t.integer "order_id", null: false
+    t.integer "dish_id"
+    t.integer "order_id"
     t.string "order_status"
     t.integer "quantity"
     t.decimal "total_amount"
